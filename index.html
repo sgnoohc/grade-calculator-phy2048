@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Score Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            max-width: 600px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .quiz-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .homework-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            font-size: 18px;
+            font-family: monospace;
+            color: #333;
+        }
+        .warning {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>PHY2048 Calculator</h1>
+    <form id="scoreForm">
+        <label for="exam1">Exam 1 Score:</label>
+        <input type="number" id="exam1" placeholder="Enter score for Exam 1 (? out of 20)" min="0" max="20">
+
+        <label for="exam2">Exam 2 Score:</label>
+        <input type="number" id="exam2" placeholder="Enter score for Exam 2 (? out of 20)" min="0" max="20">
+
+        <!-- <label for="finalExam">Final Exam Score:</label> -->
+        <!-- <input type="number" id="finalExam" placeholder="Enter score for Final Exam" min="0" max="100"> -->
+
+        <label>Quizzes (Enter scores for 10 quizzes):</label>
+        <div class="quiz-section">
+            <input type="number" class="quiz" placeholder="Quiz 1 (? out of 4)" min="0" max="4">
+            <input type="number" class="quiz" placeholder="Quiz 2 (? out of 4)" min="0" max="4">
+            <input type="number" class="quiz" placeholder="Quiz 3 (? out of 4)" min="0" max="4">
+            <input type="number" class="quiz" placeholder="Quiz 4 (? out of 4)" min="0" max="4">
+            <input type="number" class="quiz" placeholder="Quiz 6 (? out of 4)" min="0" max="4">
+            <input type="number" class="quiz" placeholder="Quiz 7 (? out of 4)" min="0" max="4">
+            <input type="number" class="quiz" placeholder="Quiz 8 (? out of 4)" min="0" max="4">
+            <input type="number" class="quiz" placeholder="Quiz 9 (? out of 4)" min="0" max="4">
+            <input type="number" class="quiz" placeholder="Quiz 11 (? out of 4)" min="0" max="4">
+            <input type="number" class="quiz" placeholder="Quiz 12 (? out of 4)" min="0" max="4">
+        </div>
+
+        <label>Homework (Enter scores for 12 homeworks):</label>
+        <div class="homework-section">
+            <input type="number" class="homework" placeholder="Homework 1 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 2 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 3 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 4 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 5 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 6 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 7 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 8 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 9 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 10 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 11 (? out of 10)" min="0" max="10">
+            <input type="number" class="homework" placeholder="Homework 12 (? out of 10)" min="0" max="10">
+        </div>
+
+        <label for="iClicker">iClicker:</label>
+        <input type="number" id="iClicker" placeholder="Enter score for iClicker (? out of 56)" min="0" max="20">
+
+        <button type="button" onclick="calculateScore()">Calculate Grade Projection</button>
+    </form>
+    <div class="output" id="output"></div>
+    <!-- <div class="warning" id="warning"></div> -->
+
+    <script>
+        function calculateScore() {
+            // Get values for exams
+            const exam1 = parseFloat(document.getElementById('exam1').value) / 20 * 25 || 0;
+            const exam2 = parseFloat(document.getElementById('exam2').value) / 20 * 25 || 0;
+            <!-- const finalExam = parseFloat(document.getElementById('finalExam').value) || 0; -->
+
+            // Check if any exam input exceeds max allowed value
+            if (exam1 > 25) {
+                document.getElementById('output').textContent = "Warning: Exam 1 scores cannot exceed 20!";
+                return; // Stop calculation if invalid input is found
+            }
+            // Check if any exam input exceeds max allowed value
+            if (exam2 > 25) {
+                document.getElementById('output').textContent = "Warning: Exam 2 scores cannot exceed 20!";
+                return; // Stop calculation if invalid input is found
+            }
+
+            // Get quiz scores and calculate the adjusted total
+            const quizInputs = document.querySelectorAll('.quiz');
+            let quizSum = 0;
+            quizInputs.forEach(input => {
+                quizSum += parseFloat(input.value) || 0;
+            });
+
+            const quizScore = Math.min(1, (quizSum / 40) / 0.9) * 20;
+
+            for (let i = 0; i < quizInputs.length; i++) {
+                const quizScoreTmp = parseFloat(quizInputs[i].value) || 0;
+                if (quizScoreTmp > 4) {
+                    document.getElementById('warning').textContent = "Warning: Quiz scores cannot exceed 4!";
+                    return; // Stop calculation if invalid quiz score is found
+                }
+            }
+
+            // Get homework scores and calculate the adjusted total
+            const homeworkInputs = document.querySelectorAll('.homework');
+            let homeworkSum = 0;
+            homeworkInputs.forEach(input => {
+                homeworkSum += parseFloat(input.value) || 0;
+            });
+
+            const homeworkScore = Math.min(1, (homeworkSum / 120) / 0.8) * 5;
+
+            for (let i = 0; i < homeworkInputs.length; i++) {
+                const homeworkScoreTmp = parseFloat(homeworkInputs[i].value) || 0;
+                if (homeworkScoreTmp > 4) {
+                    document.getElementById('warning').textContent = "Warning: Homework scores cannot exceed 4!";
+                    return; // Stop calculation if invalid homework score is found
+                }
+            }
+
+            const iClickerRaw = document.getElementById('iClicker').value || 0;
+
+            // Check if any exam input exceeds max allowed value
+            if (iClickerRaw > 56) {
+                document.getElementById('output').textContent = "Warning: iClicker scores cannot exceed 56!";
+                return; // Stop calculation if invalid input is found
+            }
+
+            const iClicker = Math.min(1, parseFloat(document.getElementById('iClicker').value) / 56 / 0.8) * 5 || 0;
+
+            // Calculate total score
+            const totalScore = exam1 + exam2 + quizScore + homeworkScore + iClicker;
+
+            const Exam3_A  = (85 - totalScore) / 25. * 20
+            const Exam3_Am = (80 - totalScore) / 25. * 20
+            const Exam3_Bp = (75 - totalScore) / 25. * 20
+            const Exam3_B  = (70 - totalScore) / 25. * 20
+            const Exam3_Bm = (65 - totalScore) / 25. * 20
+            const Exam3_Cp = (60 - totalScore) / 25. * 20
+            const Exam3_C  = (55 - totalScore) / 25. * 20
+
+            // Display results
+            document.getElementById('output').innerHTML = `
+            <pre>
+Exam 1: ${exam1.toFixed(2).padStart(19, ' ')} pts / 25 pts
+Exam 2: ${exam2.toFixed(2).padStart(19, ' ')} pts / 25 pts
+Quiz Overall: ${quizScore.toFixed(2).padStart(13, ' ')} pts / 20 pts
+Homework Overall: ${homeworkScore.toFixed(2).padStart(9, ' ')} pts /  5 pts
+iClicker Overall: ${iClicker.toFixed(2).padStart(9, ' ')} pts /  5 pts (extra credit)
+---------------------------------------------
+Total Current Score: ${totalScore.toFixed(2).padStart(6, ' ')} pts / 75 pts
+
+Final Exam Scores needed for A  : ${Exam3_A.toFixed(2).padStart(6, ' ')} / 20 problems
+Final Exam Scores needed for A- : ${Exam3_Am.toFixed(2).padStart(6, ' ')} / 20 problems
+Final Exam Scores needed for B+ : ${Exam3_Bp.toFixed(2).padStart(6, ' ')} / 20 problems
+Final Exam Scores needed for B  : ${Exam3_B.toFixed(2).padStart(6, ' ')} / 20 problems
+Final Exam Scores needed for B- : ${Exam3_Bm.toFixed(2).padStart(6, ' ')} / 20 problems
+Final Exam Scores needed for C+ : ${Exam3_Cp.toFixed(2).padStart(6, ' ')} / 20 problems
+Final Exam Scores needed for C  : ${Exam3_C.toFixed(2).padStart(6, ' ')} / 20 problems
+            </pre>
+            `;
+        }
+    </script>
+</body>
+</html>
+
