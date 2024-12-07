@@ -145,7 +145,7 @@
             for (let i = 0; i < quizInputs.length; i++) {
                 const quizScoreTmp = parseFloat(quizInputs[i].value) || 0;
                 if (quizScoreTmp > 4) {
-                    document.getElementById('warning').textContent = "Warning: Quiz scores cannot exceed 4!";
+                    document.getElementById('output').textContent = "Warning: Quiz scores cannot exceed 4!";
                     return; // Stop calculation if invalid quiz score is found
                 }
             }
@@ -162,7 +162,7 @@
             for (let i = 0; i < homeworkInputs.length; i++) {
                 const homeworkScoreTmp = parseFloat(homeworkInputs[i].value) || 0;
                 if (homeworkScoreTmp > 4) {
-                    document.getElementById('warning').textContent = "Warning: Homework scores cannot exceed 4!";
+                    document.getElementById('output').textContent = "Warning: Homework scores cannot exceed 4!";
                     return; // Stop calculation if invalid homework score is found
                 }
             }
